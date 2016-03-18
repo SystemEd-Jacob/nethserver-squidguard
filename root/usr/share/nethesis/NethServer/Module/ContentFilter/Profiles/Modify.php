@@ -30,6 +30,7 @@ use Nethgui\System\PlatformInterface as Validate;
 class Modify extends \Nethgui\Controller\Table\Modify
 {
     private $users = array();
+    private $ADGroups = array();
     private $ADUsers = array();
     private $userGroups = array();
     private $hosts = array();
@@ -55,7 +56,15 @@ class Modify extends \Nethgui\Controller\Table\Modify
                         $this->ADUsers[] = $tmp[0];
                     }
                 }
- 
+                
+                $lines = $this->getPlatform()->exec('/usr/bin/getent group')->getOutputArray();
+                foreach($lines as $line) {
+                    $tmp = explode(':',$line);
+                    if (intval($tmp[2]) >= 50000) {
+                        $this->ADGroups[] = $tmp[0];
+                    }
+                }
+                
             }
         }
         if (!$this->userGroups) {
@@ -223,7 +232,18 @@ class Modify extends \Nethgui\Controller\Table\Modify
         if ($zones || $roles) {
             $tmp[] = array(array_merge($roles, $zones),$z);
         }
+        
+        $adg = $view->translate('ADGroups_label');
+        $adgroups = array();
+        foreach($this->ADGroups as $k) {
+            $adgroups[] = array($k, $k);
+        }
+        if ($adgroups) {
+            $tmp[] = array($adgroups,$adg);
+        }
 
+        $view['SrcDatasource'] = $tmp;
+        
         $adu = $view->translate('ADUsers_label');
         $adusers = array();
         foreach($this->ADUsers as $k) {
