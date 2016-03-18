@@ -25,6 +25,7 @@ $L['role_label'] = 'Zone';
 $L['key_exists_message'] = 'A filter, profile or time with the same name already exists';
 $L['key_doesnt_exists_message'] = 'This object doesn\'t exists';
 $L['aduser_label'] = 'AD user';
+$L['ADGroups_label'] = 'AD groups';
 $L['ADUsers_label'] = 'AD users';
 $L['cidr_label'] = 'CIDR subnet';
 $L['Cidrs_label'] = 'CIDR subnets';
